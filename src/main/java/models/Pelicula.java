@@ -1,5 +1,8 @@
 package models;
 
+import types.TipoGenero;
+import types.TipoProyeccion;
+
 import java.util.*;
 
 /**

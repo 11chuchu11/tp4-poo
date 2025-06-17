@@ -1,8 +1,12 @@
 package controllers;
 
 import dtos.FuncionDTO;
+import models.Entrada;
+import models.Funcion;
 import models.Pelicula;
 import models.Sala;
+import types.TipoGenero;
+import types.TipoProyeccion;
 
 import java.util.*;
 

@@ -1,6 +1,8 @@
 package controllers;
 
+import models.CondicionesDescuento;
 import models.TarjetaDescuento;
+import types.TipoTarjeta;
 
 import java.util.*;
 

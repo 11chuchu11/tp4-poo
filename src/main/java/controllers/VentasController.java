@@ -1,6 +1,11 @@
 package controllers;
 
 import dtos.FuncionDTO;
+import dtos.VentaDto;
+import models.Funcion;
+import models.Venta;
+import types.TipoGenero;
+import types.TipoTarjeta;
 
 import java.util.*;
 

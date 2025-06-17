@@ -1,5 +1,9 @@
 package controllers;
 
+import models.Pelicula;
+import types.TipoGenero;
+import types.TipoProyeccion;
+
 import java.util.*;
 
 

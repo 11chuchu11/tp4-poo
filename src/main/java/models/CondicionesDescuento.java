@@ -1,5 +1,7 @@
 package models;
 
+import types.TipoTarjeta;
+
 import java.util.*;
 
 /**
