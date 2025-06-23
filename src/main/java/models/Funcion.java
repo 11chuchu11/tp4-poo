@@ -1,121 +1,62 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * 
- */
-public class Funcion {
+public class Funcion extends Data {
 
-    /**
-     * Default constructor
-     */
-    public Funcion(Date fecha, int funcionID, String horario, List<Entrada> entradas, Sala sala, Pelicula pelicula) {
-    	
-    	this.entradas = entradas;
-    	this.fecha = fecha;
-    	this.funcionID = funcionID;
-    	this.horario = horario;    	
-    	this.sala = sala;
-    	this.pelicula = pelicula;
-    	
-    }
-
-    public Pelicula getPelicula() {
-        return pelicula;
-    }
-
-    /*
-    *
-    *
-    */
-    private Pelicula pelicula;
-
-    /**
-     * 
-     */
-    private int funcionID;
-
-    /**
-     * 
-     */
+    private int peliculaID;
     private String horario;
+    private LocalDateTime fecha;
+    private List<Entrada> entradas;
+    private int salaID;
 
-    /**
-     * 
-     */
-    private Date fecha;
+    public Funcion(LocalDateTime fecha, String horario, List<Entrada> entradas, int salaID, int peliculaID) {
+        super(0);
+        this.entradas = entradas;
+        this.fecha = fecha;
+        this.horario = horario;
+        this.salaID = salaID;
+        this.peliculaID = peliculaID;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getID() {
+        return this.id;
+    }
 
     public List<Entrada> getEntradas() {
         return entradas;
     }
 
-    /**
-     * 
-     */
-    private List<Entrada> entradas;
 
-    private Sala sala;
-
-
-
-    /**
-     * @return
-     */
-    public int getSalaID() {
-        // TODO implement here
-        return 0;
-    }
-
-    /**
-     * @return
-     */
-    public int getSucursalID() {
-        // TODO implement here
-        return 0;
-    }
-
-    /**
-     * @return
-     */
     public int getPeliculaID() {
-        // TODO implement here
-        if(Objects.nonNull(getPelicula().getPeliculaID())){
-
-        }
-        return 0;
+        return this.peliculaID;
     }
 
-    /**
-     * 
-     */
-    public int getCantidadAsientosDisponibles() {
-    	
-		return 0;
-        // TODO implement here
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    /**
-     * @return
-     */
-    public int getFuncionID() {
-
-        return this.funcionID;
+    public String getHorario() {
+        return horario;
     }
 
-    /**
-     * 	
-     */
-    public Date getFecha() {
-		return fecha;
-        // TODO implement here
+    public int getSalaID() {
+        return salaID;
     }
 
-    public float calcularMontoPorEntradaDeLaPelicula(){
+
+    // TODO: ver esto
+    public float calcularMontoPorEntradaDeLaPelicula() {
         float total = 0.0f;
-        for (Entrada entrada:getEntradas()) {
-            total = total+ (entrada.getPrecio() -
-                    (entrada.getPrecio()*pelicula.getCondicionesDescuento().getDescuento()));
+        for (Entrada entrada : getEntradas()) {
+           // total = total + (entrada.getPrecio() - (entrada.getPrecio() * pelicula.getCondicionesDescuento().getDescuento()));
         }
         return total;
     }

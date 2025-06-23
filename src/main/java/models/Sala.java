@@ -1,57 +1,65 @@
 package models;
 
-/**
- * 
- */
-public class Sala {
+import types.TipoGenero;
 
-    /**
-     * Default constructor
-     */
-    public Sala(int salaID, String denominacion, int asientos) {
-    	this.asientos = asientos;
-    	this.denominacion = denominacion;
-    	this.salaID = salaID;
-    }
+import java.util.Objects;
 
-    /**
-     * 
-     */
-    private int salaID;
+public class Sala extends Data{
 
-    /**
-     * 
-     */
+    private int sucursalID, asientos;
     private String denominacion;
+    // Indica si solo se puede mostra un unico genero en la sala
+    private TipoGenero genero;
 
-    /**
-     * 
-     */
-    private int asientos;
+    public Sala(int sucursalID, int asientos, String denominacion, TipoGenero genero) {
+        super(0);
+        this.sucursalID = sucursalID;
+        this.asientos = asientos;
+        this.denominacion = denominacion;
+        this.genero = genero;
+    }
 
+    public Sala(int id, int sucursalID, String denominacion, int asientos) {
+        super(id);
+        this.sucursalID = sucursalID;
+        this.asientos = asientos;
+        this.denominacion = denominacion;
+        this.genero = null;
+    }
 
+    public void setID(int id) {
+        this.id = id;
+    }
 
-    /**
-     * @return
-     */
     public int getSucursalID() {
-        // TODO implement here
-        return 0;
+        return this.sucursalID;
     }
 
-    /**
-     * @return
-     */
-    public int getSalaID() {
-        // TODO implement here
-        return 0;
+    public int getID() {
+        return this.id;
     }
 
-    /**
-     * @return
-     */
     public int getAsientos() {
         return this.asientos;
     }
 
+    public TipoGenero getGenero() {
+        return this.genero;
+    }
+
+    public String getDenominacion() {
+        return denominacion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Sala sala = (Sala) o;
+        return sucursalID == sala.sucursalID && asientos == sala.asientos && Objects.equals(denominacion, sala.denominacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sucursalID, asientos, denominacion);
+    }
 }

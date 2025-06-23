@@ -2,46 +2,43 @@ package models;
 
 import java.util.*;
 
-/**
- * 
- */
-public class Sucursal {
+public class Sucursal extends Data {
 
-    /**
-     * Default constructor
-     */
-    public Sucursal(int sucursalID, String denominacion, String direccion, ArrayList<Sala> sala) {
-    	this.denominacion = denominacion;
-    	this.direccion = direccion;
-    	this.sucursalID = sucursalID;
-    	this.salas = sala;
-    }
-
-    /**
-     * 
-     */
-    private int sucursalID;
-
-    /**
-     * 
-     */
     private String denominacion;
-
-    /**
-     * 
-     */
     private String direccion;
-    
-    private List<Sala> salas;
 
 
-
-    /**
-     * @return
-     */
-    public int getSucursalID() {
-        // TODO implement here
-        return 0;
+    public Sucursal( String denominacion, String direccion) {
+        super(0);
+        this.denominacion = denominacion;
+        this.direccion = direccion;
     }
 
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public int getID() {
+        return this.id;
+    }
+
+    public String getDenominacion() {
+        return denominacion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Sucursal sucursal = (Sucursal) o;
+        return Objects.equals(denominacion, sucursal.denominacion) && Objects.equals(direccion, sucursal.direccion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(denominacion, direccion);
+    }
 }

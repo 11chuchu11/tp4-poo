@@ -1,57 +1,37 @@
 package models;
 
-import models.CondicionesDescuento;
+public class Combo extends Data{
 
-/**
- * 
- */
-public class Combo {
-
-    /**
-     * Default constructor
-     */
-    public Combo(int comboID, String descripcion, float precio, CondicionesDescuento Contiene  ) {
-    	this.comboID = comboID;
-    	this.Contiene = Contiene;
-    	this.descripcion = descripcion;
-    	this.precio = precio;
-    }
-
-    /**
-     * 
-     */
-    private int comboID;
-
-    /**
-     * 
-     */
+    private CondicionesDescuento descuento;
     private String descripcion;
-
-    /**
-     * 
-     */
     private float precio;
 
+    public Combo(String descripcion, float precio, CondicionesDescuento Contiene) {
+        super(0);
+        this.descuento = Contiene;
+        this.descripcion = descripcion;
+        this.precio = precio;
+    }
 
-    /**
-     * 
-     */
-    public CondicionesDescuento Contiene;
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
 
-    /**
-     * @return
-     */
+    @Override
+    public int getID() {
+        return this.id;
+    }
+
+    public CondicionesDescuento getDescuento() {
+        return descuento;
+    }
+
     public float getPrecio() {
-        // TODO implement here
-        return 0.0f;
+        return precio;
     }
 
-    /**
-     * 
-     */
-    public int getComboID() {
-		return comboID;
-        // TODO implement here
+    public String getDescripcion() {
+        return descripcion;
     }
-
 }

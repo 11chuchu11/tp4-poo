@@ -5,79 +5,64 @@ import types.TipoProyeccion;
 
 import java.util.*;
 
-/**
- * 
- */
-public class Pelicula {
+public class Pelicula extends Data {
 
-    /**
-     * Default constructor
-     */
-    public Pelicula(TipoGenero generoID, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, CondicionesDescuento descuento) {
-    
-    this.actores = actores;
-    this.director = director;
-    this.duracionEnMinutos = duracionEnMinutos;
-    this.generoID = generoID;
-    this.nombrePelicula = nombrePelicula;
-    this.tipo = tipo;
-    this.condicionesDescuento = descuento;
-    
-    
-    
-    }
-
-    public TipoGenero getGeneroID() {
-        return generoID;
-    }
-
-    public void setGeneroID(TipoGenero generoID) {
-        this.generoID = generoID;
-    }
-
-    /**
-     * 
-     */
-    private TipoGenero generoID;
-
-    /**
-     * 
-     */
+    private TipoGenero genero;
     private String nombrePelicula;
-
-    /**
-     * 
-     */
     private int duracionEnMinutos;
-
-    /**
-     * 
-     */
     private String director;
-
-    /**
-     * 
-     */
     private List<String> actores;
-
-    /**
-     * 
-     */
     private TipoProyeccion tipo;
+    private CondicionesDescuento condicionesDescuento;
+
+    public Pelicula( TipoGenero genero, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, CondicionesDescuento descuento) {
+        super(0);
+        this.actores = actores;
+        this.director = director;
+        this.duracionEnMinutos = duracionEnMinutos;
+        this.genero = genero;
+        this.nombrePelicula = nombrePelicula;
+        this.tipo = tipo;
+        this.condicionesDescuento = descuento;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public TipoGenero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(TipoGenero genero) {
+        this.genero = genero;
+    }
 
     public CondicionesDescuento getCondicionesDescuento() {
         return condicionesDescuento;
     }
 
-    private CondicionesDescuento condicionesDescuento;
-
-
-    /**
-     * 
-     */
-    public int getPeliculaID() {
-        // TODO implement here
-        return 0;
+    public int getID() {
+        return this.id;
     }
 
+    public String getNombrePelicula() {
+        return nombrePelicula;
+    }
+
+    public TipoProyeccion getTipo() {
+        return tipo;
+    }
+
+    public List<String> getActores() {
+        return actores;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public int getDuracionEnMinutos() {
+        return duracionEnMinutos;
+    }
 }
