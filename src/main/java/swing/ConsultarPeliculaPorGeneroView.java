@@ -5,10 +5,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ConsultarPeliculaPorGeneroView extends JFrame {
-    private JPanel contentPane;
-    private JComboBox<String> comboBoxGenero;
-    private JTextArea textAreaPeliculas;
-    private JButton btnCerrar;
+    private final JPanel contentPane;
+    private final JComboBox<String> comboBoxGenero;
+    private final JTextArea textAreaPeliculas;
+    private final JButton btnCerrar;
 
     public ConsultarPeliculaPorGeneroView() {
         setTitle("Consultar Películas por Género");

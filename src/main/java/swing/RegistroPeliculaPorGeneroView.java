@@ -6,13 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegistroPeliculaPorGeneroView extends JFrame {
-    private JPanel contentPane;
-    private JTextField textFieldNombre;
-    private JTextField textFieldDirector;
-    private JTextField textFieldDuracion;
-    private JTextField textFieldActores;
-    private JComboBox<String> comboBoxGenero;
-    private JComboBox<String> comboBoxTipoProyeccion;
+    private final JPanel contentPane;
+    private final JTextField textFieldNombre;
+    private final JTextField textFieldDirector;
+    private final JTextField textFieldDuracion;
+    private final JTextField textFieldActores;
+    private final JComboBox<String> comboBoxGenero;
+    private final JComboBox<String> comboBoxTipoProyeccion;
 
     public RegistroPeliculaPorGeneroView() {
         setTitle("Registrar Película por Género");

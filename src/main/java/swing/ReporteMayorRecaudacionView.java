@@ -5,9 +5,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ReporteMayorRecaudacionView extends JFrame {
-    private JPanel contentPane;
-    private JTextArea textAreaReporte;
-    private JButton btnCerrar;
+    private final JPanel contentPane;
+    private final JTextArea textAreaReporte;
+    private final JButton btnCerrar;
 
     public ReporteMayorRecaudacionView() {
         setTitle("Reporte de Películas con Mayor Recaudación");

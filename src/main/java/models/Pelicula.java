@@ -3,19 +3,19 @@ package models;
 import types.TipoGenero;
 import types.TipoProyeccion;
 
-import java.util.*;
+import java.util.List;
 
 public class Pelicula extends Data {
 
     private TipoGenero genero;
-    private String nombrePelicula;
-    private int duracionEnMinutos;
-    private String director;
-    private List<String> actores;
-    private TipoProyeccion tipo;
-    private CondicionesDescuento condicionesDescuento;
+    private final String nombrePelicula;
+    private final int duracionEnMinutos;
+    private final String director;
+    private final List<String> actores;
+    private final TipoProyeccion tipo;
+    private final int condicionesDescuentoID;
 
-    public Pelicula( TipoGenero genero, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, CondicionesDescuento descuento) {
+    public Pelicula(TipoGenero genero, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, int condicionesDescuentoID) {
         super(0);
         this.actores = actores;
         this.director = director;
@@ -23,11 +23,7 @@ public class Pelicula extends Data {
         this.genero = genero;
         this.nombrePelicula = nombrePelicula;
         this.tipo = tipo;
-        this.condicionesDescuento = descuento;
-    }
-
-    public void setID(int id) {
-        this.id = id;
+        this.condicionesDescuentoID = condicionesDescuentoID;
     }
 
     public TipoGenero getGenero() {
@@ -38,12 +34,18 @@ public class Pelicula extends Data {
         this.genero = genero;
     }
 
-    public CondicionesDescuento getCondicionesDescuento() {
-        return condicionesDescuento;
+    public int getCondicionesDescuentoID() {
+        return condicionesDescuentoID;
     }
 
+    @Override
     public int getID() {
         return this.id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     public String getNombrePelicula() {

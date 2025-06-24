@@ -1,6 +1,5 @@
 package dtos;
 
-import models.CondicionesDescuento;
 import models.Data;
 import models.Pelicula;
 import types.TipoGenero;
@@ -16,7 +15,7 @@ public class PeliculaDTO extends Data {
     private String director;
     private List<String> actores;
     private TipoProyeccion tipo;
-    private CondicionesDescuento condicionesDescuento;
+    private CondicionesDescuentoDTO condicionesDescuento;
 
     public PeliculaDTO(Pelicula pelicula) {
         super(pelicula.getID());
@@ -26,54 +25,71 @@ public class PeliculaDTO extends Data {
         this.director = pelicula.getDirector();
         this.actores = pelicula.getActores();
         this.tipo = pelicula.getTipo();
-        this.condicionesDescuento = pelicula.getCondicionesDescuento();
-    }
-
-    public PeliculaDTO(int id, TipoGenero genero, String nombrePelicula, int duracionEnMinutos, String director, List<String> actores, TipoProyeccion tipo, CondicionesDescuento condicionesDescuento) {
-        super(id);
-        this.genero = genero;
-        this.nombrePelicula = nombrePelicula;
-        this.duracionEnMinutos = duracionEnMinutos;
-        this.director = director;
-        this.actores = actores;
-        this.tipo = tipo;
-        this.condicionesDescuento = condicionesDescuento;
-    }
-
-    public void setID(int id) {
-        this.id = id;
+        this.condicionesDescuento = null;
     }
 
     public int getID() {
         return id;
     }
 
-    public CondicionesDescuento getCondicionesDescuento() {
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public CondicionesDescuentoDTO getCondicionesDescuento() {
         return condicionesDescuento;
+    }
+
+    public void setCondicionesDescuento(CondicionesDescuentoDTO condicionesDescuento) {
+        this.condicionesDescuento = condicionesDescuento;
     }
 
     public TipoGenero getGenero() {
         return genero;
     }
 
+    public void setGenero(TipoGenero genero) {
+        this.genero = genero;
+    }
+
     public String getNombrePelicula() {
         return nombrePelicula;
+    }
+
+    public void setNombrePelicula(String nombrePelicula) {
+        this.nombrePelicula = nombrePelicula;
     }
 
     public TipoProyeccion getTipo() {
         return tipo;
     }
 
+    public void setTipo(TipoProyeccion tipo) {
+        this.tipo = tipo;
+    }
+
     public List<String> getActores() {
         return actores;
+    }
+
+    public void setActores(List<String> actores) {
+        this.actores = actores;
     }
 
     public String getDirector() {
         return director;
     }
 
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
     public int getDuracionEnMinutos() {
         return duracionEnMinutos;
+    }
+
+    public void setDuracionEnMinutos(int duracionEnMinutos) {
+        this.duracionEnMinutos = duracionEnMinutos;
     }
 }
 

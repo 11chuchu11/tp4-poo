@@ -23,15 +23,14 @@ public class VentaDTO extends Data {
         this.combos = new ArrayList<>();
     }
 
+    @Override
+    public int getID() {
+        return id;
+    }
 
     @Override
     public void setID(int id) {
         this.id = id;
-    }
-
-    @Override
-    public int getID() {
-        return id;
     }
 
     public LocalDateTime getFchVenta() {

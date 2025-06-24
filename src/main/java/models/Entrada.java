@@ -2,7 +2,7 @@ package models;
 
 import java.util.Objects;
 
-public class Entrada extends Data{
+public class Entrada extends Data {
 
     private int funcionID, ventaID;
     private float precio;
@@ -17,21 +17,29 @@ public class Entrada extends Data{
     }
 
     @Override
-    public void setID(int id) {
-        this.id = id;
+    public int getID() {
+        return this.id;
     }
 
     @Override
-    public int getID() {
-        return this.id;
+    public void setID(int id) {
+        this.id = id;
     }
 
     public float getPrecio() {
         return precio;
     }
 
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+
     public int getNroAsiento() {
         return nroAsiento;
+    }
+
+    public void setNroAsiento(int nroAsiento) {
+        this.nroAsiento = nroAsiento;
     }
 
     public int getFuncionID() {
@@ -48,14 +56,6 @@ public class Entrada extends Data{
 
     public void setVentaID(int ventaID) {
         this.ventaID = ventaID;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public void setNroAsiento(int nroAsiento) {
-        this.nroAsiento = nroAsiento;
     }
 
     @Override

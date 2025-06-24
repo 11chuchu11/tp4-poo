@@ -10,7 +10,7 @@ public class EntradaDTO extends Data {
     private float precio;
     private int nroAsiento;
 
-    public EntradaDTO(Entrada entrada){
+    public EntradaDTO(Entrada entrada) {
         super(entrada.getID());
         this.funcion = null;
         this.venta = null;
@@ -51,12 +51,12 @@ public class EntradaDTO extends Data {
     }
 
     @Override
-    public void setID(int id) {
-        this.id = id;
+    public int getID() {
+        return this.id;
     }
 
     @Override
-    public int getID() {
-        return this.id;
+    public void setID(int id) {
+        this.id = id;
     }
 }

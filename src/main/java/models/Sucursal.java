@@ -1,25 +1,25 @@
 package models;
 
-import java.util.*;
+import java.util.Objects;
 
 public class Sucursal extends Data {
 
-    private String denominacion;
-    private String direccion;
+    private final String denominacion;
+    private final String direccion;
 
 
-    public Sucursal( String denominacion, String direccion) {
+    public Sucursal(String denominacion, String direccion) {
         super(0);
         this.denominacion = denominacion;
         this.direccion = direccion;
     }
 
-    public void setID(int id) {
-        this.id = id;
-    }
-
     public int getID() {
         return this.id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public String getDenominacion() {

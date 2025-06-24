@@ -4,9 +4,9 @@ import types.TipoTarjeta;
 
 public class TarjetaDescuento {
 
-    private int tarjetaID;
-    private TipoTarjeta tipoTarjeta;
-    private String numeroTarjeta;
+    private final int tarjetaID;
+    private final TipoTarjeta tipoTarjeta;
+    private final String numeroTarjeta;
 
     public TarjetaDescuento(int tarjetaID, TipoTarjeta tipoTarjeta, String numeroTarjeta) {
         this.numeroTarjeta = numeroTarjeta;

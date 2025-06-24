@@ -1,25 +1,19 @@
 package dtos;
 
 import models.Combo;
-import models.CondicionesDescuento;
 import models.Data;
 
 public class ComboDTO extends Data {
 
-    private CondicionesDescuento descuento;
+    private CondicionesDescuentoDTO condicionesDescuento;
     private String descripcion;
     private float precio;
 
     public ComboDTO(Combo combo) {
         super(combo.getID());
-        this.descuento = combo.getDescuento();
+        this.condicionesDescuento = null;
         this.descripcion = combo.getDescripcion();
         this.precio = combo.getPrecio();
-    }
-
-    @Override
-    public void setID(int id) {
-        this.id = id;
     }
 
     @Override
@@ -27,12 +21,17 @@ public class ComboDTO extends Data {
         return this.id;
     }
 
-    public CondicionesDescuento getDescuento() {
-        return descuento;
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
-    public void setDescuento(CondicionesDescuento descuento) {
-        this.descuento = descuento;
+    public CondicionesDescuentoDTO getCondicionesDescuento() {
+        return condicionesDescuento;
+    }
+
+    public void setCondicionesDescuento(CondicionesDescuentoDTO condicionesDescuento) {
+        this.condicionesDescuento = condicionesDescuento;
     }
 
     public String getDescripcion() {

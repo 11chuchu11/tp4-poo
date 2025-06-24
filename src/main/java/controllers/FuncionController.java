@@ -10,7 +10,8 @@ import types.TipoGenero;
 import utils.BusquedaBinaria;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuncionController {
 
@@ -129,10 +130,10 @@ public class FuncionController {
     public int obtenerAsientosDisponiblePorFuncion(int funcionID) {
         FuncionDTO funcionDTO = buscarFuncionPorID(funcionID);
         if (funcionDTO == null) return 0;
-        return funcionDTO.getSala().getAsientos()-funcionDTO.getEntradas().size();
+        return funcionDTO.getSala().getAsientos() - funcionDTO.getEntradas().size();
     }
 
-    public List<FuncionDTO> buscarFuncionesPorFecha(LocalDateTime fchFuncion){
+    public List<FuncionDTO> buscarFuncionesPorFecha(LocalDateTime fchFuncion) {
         List<FuncionDTO> funcionesPorFecha = new ArrayList<>();
         FuncionDTO funcionDTO;
         for (Funcion funcion : listadoFunciones) {
@@ -147,19 +148,11 @@ public class FuncionController {
         return funcionesPorFecha;
     }
 
-
-
-    public int diaDeLaSemanaConMenorVentas() {
-        // TODO implement here
-        return 0;
-    }
-
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
     public FuncionDTO simpleFuncionToDTO(Funcion funcion) {
         return new FuncionDTO(funcion);
     }
-
 
     // DTOs to OBJs
     public Funcion dtoToFuncion(FuncionDTO dto) {

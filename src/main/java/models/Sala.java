@@ -4,12 +4,13 @@ import types.TipoGenero;
 
 import java.util.Objects;
 
-public class Sala extends Data{
+public class Sala extends Data {
 
-    private int sucursalID, asientos;
-    private String denominacion;
+    private final int sucursalID;
+    private final int asientos;
+    private final String denominacion;
     // Indica si solo se puede mostra un unico genero en la sala
-    private TipoGenero genero;
+    private final TipoGenero genero;
 
     public Sala(int sucursalID, int asientos, String denominacion, TipoGenero genero) {
         super(0);
@@ -27,16 +28,16 @@ public class Sala extends Data{
         this.genero = null;
     }
 
-    public void setID(int id) {
-        this.id = id;
-    }
-
     public int getSucursalID() {
         return this.sucursalID;
     }
 
     public int getID() {
         return this.id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public int getAsientos() {

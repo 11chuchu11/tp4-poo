@@ -7,6 +7,7 @@ public abstract class Data {
         this.id = id;
     }
 
-    public abstract void setID(int id);
     public abstract int getID();
+
+    public abstract void setID(int id);
 }

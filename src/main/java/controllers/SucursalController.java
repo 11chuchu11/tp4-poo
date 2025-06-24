@@ -6,13 +6,14 @@ import models.Sala;
 import models.Sucursal;
 import utils.BusquedaBinaria;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SucursalController {
 
     private static SucursalController INSTANCE;
     private final List<Sucursal> listadoSucursales;
-    private List<Sala> listadoSalas;
+    private final List<Sala> listadoSalas;
 
     private SucursalController() {
         listadoSucursales = new ArrayList<Sucursal>();
@@ -24,17 +25,21 @@ public class SucursalController {
         return INSTANCE;
     }
 
+    public static SalaDTO salaToDto(Sala sala) {
+        return new SalaDTO(sala);
+    }
+
     // ____________________________________HELPERS____________________________________
     private int getSucursalID() {
         int sucursalListSize = listadoSucursales.size();
         if (sucursalListSize == 0) return 1;
-        return listadoSucursales.get(sucursalListSize-1).getID()+1;
+        return listadoSucursales.get(sucursalListSize - 1).getID() + 1;
     }
 
     private int getSalaID() {
         int salaListSize = listadoSalas.size();
         if (salaListSize == 0) return 1;
-        return listadoSalas.get(salaListSize-1).getID()+1;
+        return listadoSalas.get(salaListSize - 1).getID() + 1;
     }
 
     private boolean existeSucursal(Sucursal sucursal) {
@@ -76,10 +81,10 @@ public class SucursalController {
         return id;
     }
 
-    public List<SalaDTO> buscarSalasPorSucursalID(int sucursalID){
+    public List<SalaDTO> buscarSalasPorSucursalID(int sucursalID) {
         List<SalaDTO> salasPorSucursal = new ArrayList<>();
         for (Sala sala : listadoSalas) {
-            if(sala.getSucursalID() == sucursalID) salasPorSucursal.add(salaToDto(sala));
+            if (sala.getSucursalID() == sucursalID) salasPorSucursal.add(salaToDto(sala));
         }
         return salasPorSucursal;
     }
@@ -92,27 +97,16 @@ public class SucursalController {
 
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
-    public  SucursalDTO sucursalToDto(Sucursal sucursal) {
+    public SucursalDTO sucursalToDto(Sucursal sucursal) {
         return new SucursalDTO(sucursal);
-    }
-
-    public static SalaDTO salaToDto(Sala sala) {
-        return new SalaDTO(sala);
     }
 
     // DTOs to OBJs
     public Sucursal dtoToSucursal(SucursalDTO dto) {
-        return new Sucursal(dto.getDenominacion(),dto.getDireccion());
+        return new Sucursal(dto.getDenominacion(), dto.getDireccion());
     }
 
     public Sala dtoToSala(SalaDTO dto) {
-        return new Sala(dto.getSucursal().getSucursalID(), dto.getAsientos(), dto.getDenominacion(),dto.getGenero());
+        return new Sala(dto.getSucursal().getSucursalID(), dto.getAsientos(), dto.getDenominacion(), dto.getGenero());
     }
-
-
-
-
-
-
-
 }

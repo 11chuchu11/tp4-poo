@@ -1,26 +1,31 @@
 package controllers;
 
-import dtos.ComboDTO;
-import dtos.EntradaDTO;
-import dtos.FuncionDTO;
-import dtos.VentaDTO;
-import models.*;
+import dtos.*;
+import models.Combo;
+import models.Data;
+import models.Entrada;
+import models.Venta;
 import types.TipoGenero;
 import types.TipoTarjeta;
 import utils.BusquedaBinaria;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class VentasController {
 
     private static VentasController INSTANCE;
     private final FuncionController funcionController;
+    private final DescuentoController descuentoController;
     private final List<Venta> listadoVentas;
     private final List<Entrada> listadoEntradas;
     private final List<Combo> listadoCombos;
 
     private VentasController() {
         funcionController = FuncionController.getINSTANCE();
+        descuentoController = DescuentoController.getINSTANCE();
         listadoVentas = new ArrayList<>();
         listadoEntradas = new ArrayList<>();
         listadoCombos = new ArrayList<>();
@@ -33,9 +38,9 @@ public class VentasController {
 
     // ____________________________________HELPERS____________________________________
 
-    private int getID(List<Data> list){
+    private int getID(List<Data> list) {
         int listSize = list.size();
-        return list.get(listSize-1).getID()+1;
+        return list.get(listSize - 1).getID() + 1;
     }
 
 
@@ -57,7 +62,7 @@ public class VentasController {
         float totalCombos = 0;
         try {
             for (ComboDTO combo : ventaDTO.getCombos()) {
-                totalCombos = +(combo.getPrecio() * (1 - CondicionesDescuento.getDescuentoPorTarjeta(ventaDTO.getTarjetaDescuento().getTipoTarjeta())));
+                totalCombos = +(combo.getPrecio() * (1 - DescuentoController.getPorcentajeDescuentoPorTarjeta(ventaDTO.getTarjetaDescuento().getTipoTarjeta())));
             }
             return totalCombos;
         } catch (Exception ex) {
@@ -67,11 +72,12 @@ public class VentasController {
 
     private float calcularTotalPorVentadeEntradas(VentaDTO ventaDTO) {
         List<EntradaDTO> entradasDeVenta = buscarEntradasPorVenta(ventaDTO.getID());
+        CondicionesDescuentoDTO condicionesDescuentoDTO;
         float totalEntradas = 0;
         try {
             if (entradasDeVenta.size() == 0) return 0;
             for (EntradaDTO entrada : entradasDeVenta) {
-                totalEntradas = totalEntradas + (entrada.getPrecio() * (1 - ventaDTO.getFuncion().getPelicula().getCondicionesDescuento().getDescuento()));
+                totalEntradas = totalEntradas + (entrada.getPrecio() * (1 - descuentoController.getPorcentajeDescuento(ventaDTO.getFuncion().getPelicula().getCondicionesDescuento().getID())));
             }
             return totalEntradas;
         } catch (Exception ex) {
@@ -187,8 +193,11 @@ public class VentasController {
     public ComboDTO buscarComboPorID(int comboID) {
         try {
             Combo comboBuscado = BusquedaBinaria.buscarPorId(listadoCombos, comboID);
+            CondicionesDescuentoDTO descuentoDTO = descuentoController.buscarDescuentoPorId(comboBuscado.getDescuentoID());
             if (comboBuscado == null) return null;
-            return comboToDTO(comboBuscado);
+            ComboDTO comboDTO = comboToDTO(comboBuscado);
+            comboDTO.setCondicionesDescuento(descuentoDTO);
+            return comboDTO;
         } catch (Exception ex) {
             return null;
         }
@@ -206,8 +215,10 @@ public class VentasController {
                 return count;
             }));
             combosMasVendidos.addAll(listadoCombos);
-
-            return comboToDTO(combosMasVendidos.poll());
+            Combo comboMasVendido = combosMasVendidos.poll();
+            ComboDTO comboDTO = comboToDTO(comboMasVendido);
+            comboDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(comboMasVendido.getDescuentoID()));
+            return comboDTO;
         } catch (Exception ex) {
             return null;
         }

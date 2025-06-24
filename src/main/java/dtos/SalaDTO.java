@@ -5,10 +5,10 @@ import models.Sala;
 import types.TipoGenero;
 
 public class SalaDTO extends Data {
-    private SucursalDTO sucursal;
-    private int asientos;
-    private String denominacion;
-    private TipoGenero genero;
+    private final SucursalDTO sucursal;
+    private final int asientos;
+    private final String denominacion;
+    private final TipoGenero genero;
 
     public SalaDTO(Sala sala) {
         super(sala.getID());
@@ -18,18 +18,19 @@ public class SalaDTO extends Data {
         this.sucursal = null;
     }
 
-    public void setID(int id){
-        this.id = id;
-    }
-
-    public void setSucursal(SucursalDTO sucursal) {}
-
     public SucursalDTO getSucursal() {
         return sucursal;
     }
 
+    public void setSucursal(SucursalDTO sucursal) {
+    }
+
     public int getID() {
         return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public int getAsientos() {

@@ -1,7 +1,7 @@
 package types;
 
 /**
- * 
+ *
  */
 public enum TipoGenero {
     Drama,

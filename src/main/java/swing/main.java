@@ -35,6 +35,7 @@ public class main {
                 public void windowClosed(WindowEvent e) {
                     menuFrame.setVisible(true);
                 }
+
                 @Override
                 public void windowClosing(WindowEvent e) {
                     menuFrame.setVisible(true);
@@ -51,6 +52,7 @@ public class main {
                 public void windowClosed(WindowEvent e) {
                     menuFrame.setVisible(true);
                 }
+
                 @Override
                 public void windowClosing(WindowEvent e) {
                     menuFrame.setVisible(true);
@@ -63,17 +65,18 @@ public class main {
             menuFrame.setVisible(false);
             ConsultarPeliculaPorGeneroView vista = new ConsultarPeliculaPorGeneroView();
             if (vista instanceof JFrame) {
-                ((JFrame) vista).addWindowListener(new WindowAdapter() {
+                vista.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         menuFrame.setVisible(true);
                     }
+
                     @Override
                     public void windowClosing(WindowEvent e) {
                         menuFrame.setVisible(true);
                     }
                 });
-                ((JFrame) vista).setVisible(true);
+                vista.setVisible(true);
             } else {
                 // Si la vista no es JFrame, mostrar el menú de nuevo al cerrarse
                 menuFrame.setVisible(true);
@@ -84,17 +87,18 @@ public class main {
             menuFrame.setVisible(false);
             ReporteMayorRecaudacionView vista = new ReporteMayorRecaudacionView();
             if (vista instanceof JFrame) {
-                ((JFrame) vista).addWindowListener(new WindowAdapter() {
+                vista.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         menuFrame.setVisible(true);
                     }
+
                     @Override
                     public void windowClosing(WindowEvent e) {
                         menuFrame.setVisible(true);
                     }
                 });
-                ((JFrame) vista).setVisible(true);
+                vista.setVisible(true);
             } else {
                 menuFrame.setVisible(true);
             }

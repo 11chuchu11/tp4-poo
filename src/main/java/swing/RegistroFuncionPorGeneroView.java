@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegistroFuncionPorGeneroView extends JFrame {
-    private JPanel contentPane;
-    private JTextField textFieldFecha;
-    private JTextField textFieldHora;
-    private JComboBox<String> comboBoxGenero;
-    private JComboBox<String> comboBoxPelicula;
-    private JComboBox<String> comboBoxSala;
+    private final JPanel contentPane;
+    private final JTextField textFieldFecha;
+    private final JTextField textFieldHora;
+    private final JComboBox<String> comboBoxGenero;
+    private final JComboBox<String> comboBoxPelicula;
+    private final JComboBox<String> comboBoxSala;
 
     public RegistroFuncionPorGeneroView() {
         setTitle("Registrar Nueva Función por Género");

@@ -6,7 +6,8 @@ import models.Sucursal;
 import java.util.List;
 
 public class SucursalDTO extends Data {
-    private String denominacion, direccion;
+    private final String denominacion;
+    private final String direccion;
     private List<SalaDTO> salas;
 
     public SucursalDTO(Sucursal sucursal) {
@@ -16,16 +17,16 @@ public class SucursalDTO extends Data {
         this.salas = null;
     }
 
-    public void setID(int id) {
-        this.id = id;
-    }
-
     public void setSalas(List<SalaDTO> salas) {
         this.salas = salas;
     }
 
     public int getID() {
         return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public int getSucursalID() {
