@@ -12,7 +12,7 @@ public class FuncionDTO extends Data {
     private PeliculaDTO pelicula;
     private String horario;
     private LocalDateTime fecha;
-    private List<Entrada> entradas;
+    private List<EntradaDTO> entradas;
     private SalaDTO sala;
 
     public FuncionDTO(Funcion funcion) {
@@ -20,7 +20,7 @@ public class FuncionDTO extends Data {
         this.pelicula = null;
         this.horario = funcion.getHorario();
         this.fecha = funcion.getFecha();
-        this.entradas = funcion.getEntradas();
+        this.entradas = null;
         this.sala = null;
     }
 
@@ -64,11 +64,11 @@ public class FuncionDTO extends Data {
         this.fecha = fecha;
     }
 
-    public List<Entrada> getEntradas() {
+    public List<EntradaDTO> getEntradas() {
         return entradas;
     }
 
-    public void setEntradas(List<Entrada> entradas) {
+    public void setEntradas(List<EntradaDTO> entradas) {
         this.entradas = entradas;
     }
 }

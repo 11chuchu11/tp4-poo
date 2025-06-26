@@ -3,7 +3,7 @@ package models;
 public abstract class Data {
     protected int id;
 
-    public Data(int id) {
+    protected Data(int id) {
         this.id = id;
     }
 

@@ -4,9 +4,15 @@ import java.util.Objects;
 
 public class Sucursal extends Data {
 
-    private final String denominacion;
-    private final String direccion;
+    private String denominacion;
+    private String direccion;
 
+
+    public Sucursal(int id, String denominacion, String direccion) {
+        super(id);
+        this.denominacion = denominacion;
+        this.direccion = direccion;
+    }
 
     public Sucursal(String denominacion, String direccion) {
         super(0);

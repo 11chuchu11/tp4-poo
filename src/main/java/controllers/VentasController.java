@@ -1,18 +1,12 @@
 package controllers;
 
 import dtos.*;
-import models.Combo;
-import models.Data;
-import models.Entrada;
-import models.Venta;
+import models.*;
 import types.TipoGenero;
 import types.TipoTarjeta;
 import utils.BusquedaBinaria;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class VentasController {
 
@@ -72,7 +66,6 @@ public class VentasController {
 
     private float calcularTotalPorVentadeEntradas(VentaDTO ventaDTO) {
         List<EntradaDTO> entradasDeVenta = buscarEntradasPorVenta(ventaDTO.getID());
-        CondicionesDescuentoDTO condicionesDescuentoDTO;
         float totalEntradas = 0;
         try {
             if (entradasDeVenta.size() == 0) return 0;
@@ -87,6 +80,45 @@ public class VentasController {
 
     private float calcularTotalVenta(VentaDTO ventaDTO) {
         return calcularTotalPorVentaCombos(ventaDTO) + calcularTotalPorVentadeEntradas(ventaDTO);
+    }
+
+    public void precargarData(){
+        Random random = new Random();
+
+        for (int i = 1; i <= 10; i++) {
+            listadoCombos.add(new Combo(i, "Combo " + i, 1000 + (i * 100), random.nextInt(10) + 1)); // descuentoID del 1 al 10
+        }
+
+        List<TarjetaDescuento> tarjetas = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            tarjetas.add(new TarjetaDescuento(i, TipoTarjeta.UADE, "TD" + (1000 + i)));
+        }
+
+        int ventaIDCounter = 1;
+        int entradaIDCounter = 1;
+        int nroAsientoCounter = 1;
+
+        for (int i = 0; i < 10; i++) {
+            int funcionID = i + 1;
+            TarjetaDescuento tarjeta = tarjetas.get(i);
+            Venta venta = new Venta(ventaIDCounter, funcionID, tarjeta);
+
+            int cantidadEntradas = 5 + random.nextInt(16);
+            for (int j = 0; j < cantidadEntradas; j++) {
+                Entrada entrada = new Entrada(entradaIDCounter++, nroAsientoCounter++, funcionID, 1800f, ventaIDCounter);
+                listadoEntradas.add(entrada);
+            }
+
+            // Generar entre 5 y 20 combos por ID (puede haber repetidos)
+            int cantidadCombos = 5 + random.nextInt(16);
+            for (int j = 0; j < cantidadCombos; j++) {
+                int comboIdRandom = listadoCombos.get(random.nextInt(listadoCombos.size())).getID();
+                venta.getCombosIDs().add(comboIdRandom);
+            }
+
+            listadoVentas.add(venta);
+            ventaIDCounter++;
+        }
     }
 
     // ____________________________________METHODS____________________________________

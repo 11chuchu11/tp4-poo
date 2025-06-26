@@ -8,12 +8,23 @@ import java.util.List;
 public class Pelicula extends Data {
 
     private TipoGenero genero;
-    private final String nombrePelicula;
-    private final int duracionEnMinutos;
-    private final String director;
-    private final List<String> actores;
-    private final TipoProyeccion tipo;
-    private final int condicionesDescuentoID;
+    private String nombrePelicula;
+    private int duracionEnMinutos;
+    private String director;
+    private List<String> actores;
+    private TipoProyeccion tipo;
+    private int condicionesDescuentoID;
+
+    public Pelicula(int id,TipoGenero genero, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, int condicionesDescuentoID) {
+        super(id);
+        this.actores = actores;
+        this.director = director;
+        this.duracionEnMinutos = duracionEnMinutos;
+        this.genero = genero;
+        this.nombrePelicula = nombrePelicula;
+        this.tipo = tipo;
+        this.condicionesDescuentoID = condicionesDescuentoID;
+    }
 
     public Pelicula(TipoGenero genero, String director, int duracionEnMinutos, String nombrePelicula, TipoProyeccion tipo, List<String> actores, int condicionesDescuentoID) {
         super(0);

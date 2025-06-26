@@ -4,12 +4,10 @@ import dtos.FuncionDTO;
 import dtos.PeliculaDTO;
 import models.Pelicula;
 import types.TipoGenero;
+import types.TipoProyeccion;
 import utils.BusquedaBinaria;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class PeliculasController {
 
@@ -21,7 +19,8 @@ public class PeliculasController {
     public PeliculasController() {
         this.funcionController = FuncionController.getINSTANCE();
         this.descuentoController = DescuentoController.getINSTANCE();
-        this.listadoPeliculas = new ArrayList<Pelicula>();
+        this.listadoPeliculas = new ArrayList<>();
+        precargaPelicula();
     }
 
     public static PeliculasController getINSTANCE() {
@@ -41,6 +40,20 @@ public class PeliculasController {
             if (p.equals(pelicula)) return true;
         }
         return false;
+    }
+
+    private void precargaPelicula(){
+        listadoPeliculas.add(new Pelicula(1, TipoGenero.Terror, "James Wan", 112, "El Conjuro", TipoProyeccion.TresD, Arrays.asList("Vera Farmiga", "Patrick Wilson"), 1));
+        listadoPeliculas.add(new Pelicula(2, TipoGenero.Romance, "Greta Gerwig", 134, "Mujercitas", TipoProyeccion.DosD, Arrays.asList("Saoirse Ronan", "Timothée Chalamet"), 2));
+        listadoPeliculas.add(new Pelicula(3, TipoGenero.Drama, "Christopher Nolan", 150, "Oppenheimer", TipoProyeccion.CuatroD, Arrays.asList("Cillian Murphy", "Emily Blunt"), 3));
+        listadoPeliculas.add(new Pelicula(4, TipoGenero.Suspenso, "David Fincher", 138, "Perdida", TipoProyeccion.TresDMax, Arrays.asList("Ben Affleck", "Rosamund Pike"), 3));
+        listadoPeliculas.add(new Pelicula(5, TipoGenero.Biografica, "Ron Howard", 140, "Una mente brillante", TipoProyeccion.DosD, Arrays.asList("Russell Crowe", "Jennifer Connelly"), 5));
+        listadoPeliculas.add(new Pelicula(6, TipoGenero.Terror, "Jordan Peele", 100, "¡Huye!", TipoProyeccion.TresD, Arrays.asList("Daniel Kaluuya", "Allison Williams"), 2));
+        listadoPeliculas.add(new Pelicula(7, TipoGenero.Romance, "Richard Linklater", 101, "Antes del amanecer", TipoProyeccion.DosD, Arrays.asList("Ethan Hawke", "Julie Delpy"), 3));
+        listadoPeliculas.add(new Pelicula(8, TipoGenero.Drama, "Martin Scorsese", 210, "El irlandés", TipoProyeccion.TresDMax, Arrays.asList("Robert De Niro", "Al Pacino"), 2));
+        listadoPeliculas.add(new Pelicula(9, TipoGenero.Biografica, "Pablo Larraín", 111, "Jackie", TipoProyeccion.DosD, Arrays.asList("Natalie Portman", "Peter Sarsgaard"), 1));
+        listadoPeliculas.add(new Pelicula(10, TipoGenero.Suspenso, "Alfred Hitchcock", 109, "Psicosis", TipoProyeccion.CuatroD, Arrays.asList("Anthony Perkins", "Janet Leigh"), 3));
+
     }
 
     // ____________________________________METHODS____________________________________
@@ -108,7 +121,7 @@ public class PeliculasController {
 
     public PeliculaDTO buscarPeliculaMasVista() {
         try {
-            PriorityQueue<Pelicula> peliculasMasVista = new PriorityQueue<>(Comparator.comparingInt(pel -> {
+            PriorityQueue<Pelicula> peliculasMasVistas = new PriorityQueue<>(Comparator.comparingInt(pel -> {
                 int counter = 0;
                 List<FuncionDTO> funcionesPorPeliculas = funcionController.buscarFuncionesPorPelicula(pel.getID());
                 for (FuncionDTO funcion : funcionesPorPeliculas) {
@@ -116,8 +129,8 @@ public class PeliculasController {
                 }
                 return counter;
             }));
-            peliculasMasVista.addAll(listadoPeliculas);
-            Pelicula peliculaMasVista = peliculasMasVista.poll();
+            peliculasMasVistas.addAll(listadoPeliculas);
+            Pelicula peliculaMasVista = peliculasMasVistas.poll();
             PeliculaDTO peliculaDTO = peliculaToDTO(peliculaMasVista);
             peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(peliculaMasVista.getCondicionesDescuentoID()));
             return peliculaDTO;

@@ -2,9 +2,16 @@ package models;
 
 public class Combo extends Data {
 
-    private final int descuentoID;
-    private final String descripcion;
-    private final float precio;
+    private int descuentoID;
+    private String descripcion;
+    private float precio;
+
+    public Combo(int id, String descripcion, float precio, int descuentoID) {
+        super(id);
+        this.descuentoID = descuentoID;
+        this.descripcion = descripcion;
+        this.precio = precio;
+    }
 
     public Combo(String descripcion, float precio, int descuentoID) {
         super(0);

@@ -6,11 +6,19 @@ import java.util.Objects;
 
 public class Sala extends Data {
 
-    private final int sucursalID;
-    private final int asientos;
-    private final String denominacion;
+    private int sucursalID;
+    private int asientos;
+    private String denominacion;
     // Indica si solo se puede mostra un unico genero en la sala
-    private final TipoGenero genero;
+    private TipoGenero genero;
+
+    public Sala(int id,int sucursalID, int asientos, String denominacion, TipoGenero genero) {
+        super(id);
+        this.sucursalID = sucursalID;
+        this.asientos = asientos;
+        this.denominacion = denominacion;
+        this.genero = genero;
+    }
 
     public Sala(int sucursalID, int asientos, String denominacion, TipoGenero genero) {
         super(0);
@@ -18,14 +26,6 @@ public class Sala extends Data {
         this.asientos = asientos;
         this.denominacion = denominacion;
         this.genero = genero;
-    }
-
-    public Sala(int id, int sucursalID, String denominacion, int asientos) {
-        super(id);
-        this.sucursalID = sucursalID;
-        this.asientos = asientos;
-        this.denominacion = denominacion;
-        this.genero = null;
     }
 
     public int getSucursalID() {

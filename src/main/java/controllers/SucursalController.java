@@ -4,6 +4,7 @@ import dtos.SalaDTO;
 import dtos.SucursalDTO;
 import models.Sala;
 import models.Sucursal;
+import types.TipoGenero;
 import utils.BusquedaBinaria;
 
 import java.util.ArrayList;
@@ -16,17 +17,14 @@ public class SucursalController {
     private final List<Sala> listadoSalas;
 
     private SucursalController() {
-        listadoSucursales = new ArrayList<Sucursal>();
-        listadoSalas = new ArrayList<Sala>();
+        listadoSucursales = new ArrayList<>();
+        listadoSalas = new ArrayList<>();
+        precargarData();
     }
 
     public static synchronized SucursalController getINSTANCE() {
         if (INSTANCE == null) INSTANCE = new SucursalController();
         return INSTANCE;
-    }
-
-    public static SalaDTO salaToDto(Sala sala) {
-        return new SalaDTO(sala);
     }
 
     // ____________________________________HELPERS____________________________________
@@ -56,6 +54,28 @@ public class SucursalController {
         return false;
     }
 
+    private void precargarData() {
+        for (int i = 1; i <= 10; i++) {
+            listadoSucursales.add(new Sucursal(i, "Sucursal " + i, "Calle Falsa " + (100 + i)));
+        }
+
+        TipoGenero[] generos = TipoGenero.values();
+
+        int salaIdCounter = 1;
+        for (Sucursal sucursal : listadoSucursales) {
+            for (int i = 1; i <= 5; i++) {
+                TipoGenero genero = generos[(salaIdCounter - 1) % generos.length];
+                listadoSalas.add(new Sala(
+                        salaIdCounter++,
+                        sucursal.getID(),
+                        50 + (i * 10),
+                        "Sala " + i + " - " + sucursal.getDenominacion(),
+                        genero
+                ));
+            }
+        }
+    }
+
     // ____________________________________METHODS____________________________________
     public int altaNuevaSucursal(SucursalDTO dto) {
         Sucursal nuevaSucursal = dtoToSucursal(dto);
@@ -64,12 +84,6 @@ public class SucursalController {
         nuevaSucursal.setID(id);
         listadoSucursales.add(nuevaSucursal);
         return id;
-    }
-
-    public SucursalDTO buscarSucursalPorID(int sucursalID) {
-        Sucursal sucursalBuscada = BusquedaBinaria.buscarPorId(listadoSucursales, sucursalID);
-        if (sucursalBuscada == null) return null;
-        return sucursalToDto(sucursalBuscada);
     }
 
     public int altaNuevaSala(SalaDTO dto) {
@@ -81,24 +95,37 @@ public class SucursalController {
         return id;
     }
 
+    public SucursalDTO buscarSucursalPorID(int sucursalID) {
+        Sucursal sucursalBuscada = BusquedaBinaria.buscarPorId(listadoSucursales, sucursalID);
+        if (sucursalBuscada == null) return null;
+        return sucursalToDto(sucursalBuscada);
+    }
+
     public List<SalaDTO> buscarSalasPorSucursalID(int sucursalID) {
-        List<SalaDTO> salasPorSucursal = new ArrayList<>();
+        List<SalaDTO> salasBuscadas = new ArrayList<>();
         for (Sala sala : listadoSalas) {
-            if (sala.getSucursalID() == sucursalID) salasPorSucursal.add(salaToDto(sala));
+            if (sala.getSucursalID() == sucursalID) salasBuscadas.add(salaToDto(sala));
         }
-        return salasPorSucursal;
+        return salasBuscadas;
     }
 
     public SalaDTO buscarSalaPorID(int salaID) {
         Sala salaBuscada = BusquedaBinaria.buscarPorId(listadoSalas, salaID);
         if (salaBuscada == null) return null;
-        return salaToDto(salaBuscada);
+        SalaDTO salaDTO = salaToDto(salaBuscada);
+        salaDTO.setSucursal(buscarSucursalPorID(salaBuscada.getSucursalID()));
+
+        return salaDTO;
     }
 
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
     public SucursalDTO sucursalToDto(Sucursal sucursal) {
         return new SucursalDTO(sucursal);
+    }
+
+    public static SalaDTO salaToDto(Sala sala) {
+        return new SalaDTO(sala);
     }
 
     // DTOs to OBJs
