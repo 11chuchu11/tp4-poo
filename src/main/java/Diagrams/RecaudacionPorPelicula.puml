@@ -1,0 +1,41 @@
+@startuml
+actor Usuario
+participant VentasController as VentasC
+participant FuncionController as FuncionC
+participant DescuentoController as DescuentoC
+
+
+
+
+Usuario -> VentasC : recaudacionPorPelicula(peliculaID)
+activate VentasC
+
+VentasC -> FuncionC : buscarFuncionesPorPelicula(peliculaID)
+activate FuncionC
+FuncionC --> VentasC : Lista de Funciones DTO
+deactivate FuncionC
+
+loop por cada Funcion de la lista
+     VentasC -> VentasC : buscarVentaPorFuncion(funcionDTO.getID())
+     VentasC -> VentasC : calcularTotalVenta(VentaDTO)
+
+    group calcularTotalVenta(VentaDTO)
+        VentasC -> VentasC : calcularTotalPorVentaCombos(ventaDTO)
+        VentasC -> DescuentoC : getPorcentajeDescuentoPorTarjeta(Tipo de Tarjeta)
+        activate DescuentoC
+        DescuentoC --> VentasC : Total Descuento Combo
+        deactivate DescuentoC
+
+
+        VentasC -> VentasC : calcularTotalPorVentaDeEntradas(ventaDTO)
+        VentasC -> VentasC : buscarEntradasPorVenta(ventaDTO.id)
+        VentasC -> DescuentoC : getPorcentajeDescuento(descuentoID)
+        activate DescuentoC
+        DescuentoC --> VentasC : total Descuento Entrada
+        deactivate DescuentoC
+    end
+end
+VentasC --> Usuario : totalRecaudado
+deactivate VentasC
+@enduml
+
