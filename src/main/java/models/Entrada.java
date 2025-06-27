@@ -8,6 +8,14 @@ public class Entrada extends Data {
     private float precio;
     private int nroAsiento;
 
+    public Entrada(int id, int nroAsiento, int funcionID, float precio, int ventaID) {
+        super(id);
+        this.funcionID = funcionID;
+        this.ventaID = ventaID;
+        this.nroAsiento = nroAsiento;
+        this.precio = precio;
+    }
+
     public Entrada(int nroAsiento, int funcionID, float precio, int ventaID) {
         super(0);
         this.funcionID = funcionID;
@@ -43,7 +51,7 @@ public class Entrada extends Data {
     }
 
     public int getFuncionID() {
-        return this.getFuncionID();
+        return this.funcionID;
     }
 
     public void setFuncionID(int funcionID) {

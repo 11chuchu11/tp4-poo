@@ -6,17 +6,25 @@ import java.util.List;
 
 public class Venta extends Data {
 
-    private final LocalDateTime fchVenta;
-    private final List<Integer> combosIDs;
-    private final int funcionID;
-    private final TarjetaDescuento tarjetaDescuento;
+    private LocalDateTime fchVenta;
+    private List<Integer> combosIDs;
+    private int funcionID;
+    private TarjetaDescuento tarjetaDescuento;
 
-    public Venta(int funcionID) {
+    public Venta(int id, int funcionID, TarjetaDescuento tarjetaDescuento) {
+        super(id);
+        this.combosIDs = new ArrayList<>();
+        this.funcionID = funcionID;
+        this.fchVenta = LocalDateTime.now();
+        this.tarjetaDescuento = tarjetaDescuento;
+    }
+
+    public Venta(int funcionID, TarjetaDescuento tarjetaDescuento) {
         super(0);
         this.combosIDs = new ArrayList<>();
         this.funcionID = funcionID;
         this.fchVenta = LocalDateTime.now();
-        this.tarjetaDescuento = null;
+        this.tarjetaDescuento = tarjetaDescuento;
     }
 
     @Override

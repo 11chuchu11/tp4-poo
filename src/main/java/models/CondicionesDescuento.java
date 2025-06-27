@@ -7,17 +7,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 public class CondicionesDescuento extends Data {
 
-    private final LocalDateTime fchDesde;
-    private final LocalDateTime fchHasta;
-    private final DiaDeLaSemana diaSemana;
-    private final float porcentaje;
-    private final TipoTarjeta tipoTarjeta;
-    private final List<TarjetaDescuento> tarjetasDescuentos;
+    private LocalDateTime fchDesde;
+    private LocalDateTime fchHasta;
+    private DiaDeLaSemana diaSemana;
+    private float porcentaje;
+    private TipoTarjeta tipoTarjeta;
+    private List<TarjetaDescuento> tarjetasDescuentos;
+
+    public CondicionesDescuento(int id, LocalDateTime fchDesde, LocalDateTime fchHasta, DiaDeLaSemana diaSemana, float porcentaje, TipoTarjeta tipoTarjeta, ArrayList<TarjetaDescuento> tarjetasDescuentos) {
+        super(id);
+        this.diaSemana = diaSemana;
+        this.fchDesde = fchDesde;
+        this.fchHasta = fchHasta;
+        this.porcentaje = porcentaje;
+        this.tipoTarjeta = tipoTarjeta;
+        this.tarjetasDescuentos = tarjetasDescuentos;
+    }
 
     public CondicionesDescuento(LocalDateTime fchDesde, LocalDateTime fchHasta, DiaDeLaSemana diaSemana, float porcentaje, TipoTarjeta tipoTarjeta, ArrayList<TarjetaDescuento> tarjetasDescuentos) {
         super(0);
@@ -27,6 +34,16 @@ public class CondicionesDescuento extends Data {
         this.porcentaje = porcentaje;
         this.tipoTarjeta = tipoTarjeta;
         this.tarjetasDescuentos = tarjetasDescuentos;
+    }
+
+    public CondicionesDescuento(LocalDateTime fchDesde, LocalDateTime fchHasta, DiaDeLaSemana diaSemana, float porcentaje, TipoTarjeta tipoTarjeta) {
+        super(0);
+        this.diaSemana = diaSemana;
+        this.fchDesde = fchDesde;
+        this.fchHasta = fchHasta;
+        this.porcentaje = porcentaje;
+        this.tipoTarjeta = tipoTarjeta;
+        this.tarjetasDescuentos = new ArrayList<>();
     }
 
     @Override
@@ -63,4 +80,27 @@ public class CondicionesDescuento extends Data {
         return tarjetasDescuentos;
     }
 
+    public void setFchDesde(LocalDateTime fchDesde) {
+        this.fchDesde = fchDesde;
+    }
+
+    public void setFchHasta(LocalDateTime fchHasta) {
+        this.fchHasta = fchHasta;
+    }
+
+    public void setDiaSemana(DiaDeLaSemana diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    public void setPorcentaje(float porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
+    public void setTipoTarjeta(TipoTarjeta tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
+    }
+
+    public void setTarjetasDescuentos(List<TarjetaDescuento> tarjetasDescuentos) {
+        this.tarjetasDescuentos = tarjetasDescuentos;
+    }
 }
