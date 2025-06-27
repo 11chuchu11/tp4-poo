@@ -11,18 +11,17 @@ import java.util.*;
 public class VentasController {
 
     private static VentasController INSTANCE;
-    private final FuncionController funcionController;
-    private final DescuentoController descuentoController;
-    private final List<Venta> listadoVentas;
-    private final List<Entrada> listadoEntradas;
-    private final List<Combo> listadoCombos;
+    private FuncionController funcionController;
+    private DescuentoController descuentoController;
+    private List<Venta> listadoVentas;
+    private List<Entrada> listadoEntradas;
+    private List<Combo> listadoCombos;
 
     private VentasController() {
-        funcionController = FuncionController.getINSTANCE();
-        descuentoController = DescuentoController.getINSTANCE();
         listadoVentas = new ArrayList<>();
         listadoEntradas = new ArrayList<>();
         listadoCombos = new ArrayList<>();
+        precargarData();
     }
 
     public static synchronized VentasController getINSTANCE() {
@@ -53,6 +52,7 @@ public class VentasController {
     }
 
     private float calcularTotalPorVentaCombos(VentaDTO ventaDTO) {
+        descuentoController = DescuentoController.getINSTANCE();
         float totalCombos = 0;
         try {
             for (ComboDTO combo : ventaDTO.getCombos()) {
@@ -64,7 +64,8 @@ public class VentasController {
         }
     }
 
-    private float calcularTotalPorVentadeEntradas(VentaDTO ventaDTO) {
+    private float calcularTotalPorVentaDeEntradas(VentaDTO ventaDTO) {
+        descuentoController = DescuentoController.getINSTANCE();
         List<EntradaDTO> entradasDeVenta = buscarEntradasPorVenta(ventaDTO.getID());
         float totalEntradas = 0;
         try {
@@ -79,10 +80,11 @@ public class VentasController {
     }
 
     private float calcularTotalVenta(VentaDTO ventaDTO) {
-        return calcularTotalPorVentaCombos(ventaDTO) + calcularTotalPorVentadeEntradas(ventaDTO);
+        return calcularTotalPorVentaCombos(ventaDTO) + calcularTotalPorVentaDeEntradas(ventaDTO);
     }
 
-    public void precargarData(){
+
+    public void precargarData() {
         Random random = new Random();
 
         for (int i = 1; i <= 10; i++) {
@@ -124,43 +126,22 @@ public class VentasController {
     // ____________________________________METHODS____________________________________
 
     public VentaDTO buscarVentaPorID(int ventaID) {
+        funcionController = FuncionController.getINSTANCE();
         try {
             Venta ventaBuscada = BusquedaBinaria.buscarPorId(listadoVentas, ventaID);
             if (ventaBuscada == null) return null;
-            VentaDTO ventaDTO = ventaToDTO(ventaBuscada);
-            List<ComboDTO> comboDTOS = new ArrayList<>();
-            ComboDTO comboBuscado;
-            for (int comboID : ventaBuscada.getCombosIDs()) {
-                comboBuscado = buscarComboPorID(comboID);
-                if (comboBuscado != null) comboDTOS.add(comboBuscado);
-            }
-            FuncionDTO funcionDTO = funcionController.buscarFuncionPorID(ventaBuscada.getFuncionID());
-            ventaDTO.setCombos(comboDTOS);
-            ventaDTO.setFuncion(funcionDTO);
-            return ventaDTO;
+
+            return ventaToDTO(ventaBuscada);
         } catch (Exception ex) {
             return null;
         }
     }
 
     public VentaDTO buscarVentaPorFuncion(int funcionID) {
+        funcionController = FuncionController.getINSTANCE();
         try {
-            VentaDTO ventaBuscada = null;
-            List<ComboDTO> comboDTOS = new ArrayList<>();
-            FuncionDTO funcionDTO;
-            ComboDTO comboBuscado;
             for (Venta venta : listadoVentas) {
-                if (venta.getFuncionID() == funcionID) {
-                    funcionDTO = funcionController.buscarFuncionPorID(venta.getFuncionID());
-                    ventaBuscada = ventaToDTO(venta);
-                    for (int id : venta.getCombosIDs()) {
-                        comboBuscado = buscarComboPorID(id);
-                        if (comboBuscado != null) comboDTOS.add(comboBuscado);
-                    }
-                    ventaBuscada.setCombos(comboDTOS);
-                    ventaBuscada.setFuncion(funcionDTO);
-                    return ventaBuscada;
-                }
+                if (venta.getFuncionID() == funcionID) return ventaToDTO(venta);
             }
             return null;
         } catch (Exception ex) {
@@ -175,6 +156,7 @@ public class VentasController {
      * @return
      */
     public List<VentaDTO> buscarVentasPorGenero(TipoGenero genero) {
+        funcionController = FuncionController.getINSTANCE();
         try {
             List<VentaDTO> ventasDtos = new ArrayList<>();
             List<FuncionDTO> funcionesBuscadas = funcionController.buscarFuncionesPorGenero(genero);
@@ -193,15 +175,11 @@ public class VentasController {
     }
 
     public EntradaDTO buscarEntradaPorID(int entradaID) {
+        funcionController = FuncionController.getINSTANCE();
         try {
             Entrada entradaBuscada = BusquedaBinaria.buscarPorId(listadoEntradas, entradaID);
             if (entradaBuscada == null) return null;
-            FuncionDTO funciontDTO = funcionController.buscarFuncionPorID(entradaBuscada.getFuncionID());
-            EntradaDTO entradaDTO = entradaToDto(entradaBuscada);
-            VentaDTO ventaDTO = buscarVentaPorID(entradaBuscada.getVentaID());
-            entradaDTO.setFuncion(funciontDTO);
-            entradaDTO.setVenta(ventaDTO);
-            return entradaDTO;
+            return entradaToDto(entradaBuscada);
 
         } catch (Exception ex) {
             return null;
@@ -212,10 +190,9 @@ public class VentasController {
         try {
             List<EntradaDTO> entradasBuscadas = new ArrayList<>();
             for (Entrada entrada : listadoEntradas) {
-                if (entrada.getVentaID() == ventaID) {
-                    entradasBuscadas.add(entradaToDto(entrada));
-                }
+                if (entrada.getVentaID() == ventaID) entradasBuscadas.add(entradaToDto(entrada));
             }
+
             return entradasBuscadas;
         } catch (Exception ex) {
             return null;
@@ -225,17 +202,16 @@ public class VentasController {
     public ComboDTO buscarComboPorID(int comboID) {
         try {
             Combo comboBuscado = BusquedaBinaria.buscarPorId(listadoCombos, comboID);
-            CondicionesDescuentoDTO descuentoDTO = descuentoController.buscarDescuentoPorId(comboBuscado.getDescuentoID());
             if (comboBuscado == null) return null;
-            ComboDTO comboDTO = comboToDTO(comboBuscado);
-            comboDTO.setCondicionesDescuento(descuentoDTO);
-            return comboDTO;
+
+            return comboToDTO(comboBuscado);
         } catch (Exception ex) {
             return null;
         }
     }
 
     public ComboDTO comboMasVendido() {
+        descuentoController = DescuentoController.getINSTANCE();
         try {
             PriorityQueue<Combo> combosMasVendidos = new PriorityQueue<>(Comparator.comparingInt((comb) -> {
                 int count = 0;
@@ -244,13 +220,12 @@ public class VentasController {
                         if (id == comb.getID()) count++;
                     }
                 }
+
                 return count;
             }));
             combosMasVendidos.addAll(listadoCombos);
-            Combo comboMasVendido = combosMasVendidos.poll();
-            ComboDTO comboDTO = comboToDTO(comboMasVendido);
-            comboDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(comboMasVendido.getDescuentoID()));
-            return comboDTO;
+
+            return comboToDTO(combosMasVendidos.poll());
         } catch (Exception ex) {
             return null;
         }
@@ -270,6 +245,7 @@ public class VentasController {
      * @return
      */
     public float recaudacionPorPelicula(int peliculaID) {
+        funcionController = FuncionController.getINSTANCE();
         try {
             VentaDTO ventaDTO;
             List<FuncionDTO> funciones = funcionController.buscarFuncionesPorPelicula(peliculaID);
@@ -306,16 +282,28 @@ public class VentasController {
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
     private VentaDTO ventaToDTO(Venta venta) {
-        return new VentaDTO(venta);
+        funcionController = FuncionController.getINSTANCE();
+        VentaDTO ventaDTO = new VentaDTO(venta);
+        ventaDTO.setFuncion(funcionController.buscarFuncionPorID(venta.getFuncionID()));
+        List<ComboDTO> listadoCombos = new ArrayList<>();
+        for (int comboID : venta.getCombosIDs()) listadoCombos.add(buscarComboPorID(comboID));
+        ventaDTO.setCombos(listadoCombos);
+
+        return ventaDTO;
     }
 
     private EntradaDTO entradaToDto(Entrada entrada) {
-        return new EntradaDTO(entrada);
+        funcionController = FuncionController.getINSTANCE();
+        EntradaDTO entradaDTO = new EntradaDTO(entrada);
+        entradaDTO.setFuncion(funcionController.buscarFuncionPorID(entrada.getFuncionID()));
+        entradaDTO.setVenta(buscarVentaPorID(entrada.getVentaID()));
+        return entradaDTO;
     }
 
     private ComboDTO comboToDTO(Combo combo) {
-        return new ComboDTO(combo);
+        descuentoController = DescuentoController.getINSTANCE();
+        ComboDTO comboDTO = new ComboDTO(combo);
+        comboDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(combo.getDescuentoID()));
+        return comboDTO;
     }
-
-
 }

@@ -1,7 +1,6 @@
 package controllers;
 
-import dtos.FuncionDTO;
-import dtos.PeliculaDTO;
+import dtos.*;
 import models.Pelicula;
 import types.TipoGenero;
 import types.TipoProyeccion;
@@ -12,13 +11,12 @@ import java.util.*;
 public class PeliculasController {
 
     private static PeliculasController INSTANCE;
-    private final DescuentoController descuentoController;
-    private final FuncionController funcionController;
-    private final List<Pelicula> listadoPeliculas;
+    private DescuentoController descuentoController;
+    private FuncionController funcionController;
+    private VentasController ventasController;
+    private List<Pelicula> listadoPeliculas;
 
     public PeliculasController() {
-        this.funcionController = FuncionController.getINSTANCE();
-        this.descuentoController = DescuentoController.getINSTANCE();
         this.listadoPeliculas = new ArrayList<>();
         precargaPelicula();
     }
@@ -42,7 +40,7 @@ public class PeliculasController {
         return false;
     }
 
-    private void precargaPelicula(){
+    private void precargaPelicula() {
         listadoPeliculas.add(new Pelicula(1, TipoGenero.Terror, "James Wan", 112, "El Conjuro", TipoProyeccion.TresD, Arrays.asList("Vera Farmiga", "Patrick Wilson"), 1));
         listadoPeliculas.add(new Pelicula(2, TipoGenero.Romance, "Greta Gerwig", 134, "Mujercitas", TipoProyeccion.DosD, Arrays.asList("Saoirse Ronan", "Timothée Chalamet"), 2));
         listadoPeliculas.add(new Pelicula(3, TipoGenero.Drama, "Christopher Nolan", 150, "Oppenheimer", TipoProyeccion.CuatroD, Arrays.asList("Cillian Murphy", "Emily Blunt"), 3));
@@ -74,10 +72,10 @@ public class PeliculasController {
     public PeliculaDTO buscarPeliculaPorID(int peliculaID) {
         try {
             Pelicula peliculaBucada = BusquedaBinaria.buscarPorId(listadoPeliculas, peliculaID);
+
             if (peliculaBucada == null) return null;
-            PeliculaDTO peliculaDTO = peliculaToDTO(peliculaBucada);
-            peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(peliculaBucada.getCondicionesDescuentoID()));
-            return peliculaDTO;
+
+            return peliculaToDTO(peliculaBucada);
         } catch (Exception ex) {
             return null;
         }
@@ -87,14 +85,11 @@ public class PeliculasController {
     public List<PeliculaDTO> buscarPeliculasPorGenero(TipoGenero genero) {
         try {
             List<PeliculaDTO> peliculasBuscadas = new ArrayList<>();
-            PeliculaDTO peliculaDTO;
+
             for (Pelicula p : listadoPeliculas) {
-                if (p.getGenero() == genero) {
-                    peliculaDTO = peliculaToDTO(p);
-                    peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(p.getCondicionesDescuentoID()));
-                    peliculasBuscadas.add(peliculaDTO);
-                }
+                if (p.getGenero() == genero) peliculasBuscadas.add(peliculaToDTO(p));
             }
+
             return peliculasBuscadas;
         } catch (Exception ex) {
             return null;
@@ -104,15 +99,11 @@ public class PeliculasController {
     public List<PeliculaDTO> buscarPeliculasPorDescuentoID(int descuentoID) {
         try {
             List<PeliculaDTO> peliculasBuscadas = new ArrayList<>();
-            PeliculaDTO peliculaDTO;
 
             for (Pelicula p : listadoPeliculas) {
-                if (p.getCondicionesDescuentoID() == descuentoID) {
-                    peliculaDTO = peliculaToDTO(p);
-                    peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(p.getCondicionesDescuentoID()));
-                    peliculasBuscadas.add(peliculaDTO);
-                }
+                if (p.getCondicionesDescuentoID() == descuentoID) peliculasBuscadas.add(peliculaToDTO(p));
             }
+
             return peliculasBuscadas;
         } catch (Exception ex) {
             return null;
@@ -120,20 +111,40 @@ public class PeliculasController {
     }
 
     public PeliculaDTO buscarPeliculaMasVista() {
+        funcionController = FuncionController.getINSTANCE();
+        ventasController = VentasController.getINSTANCE();
+
         try {
             PriorityQueue<Pelicula> peliculasMasVistas = new PriorityQueue<>(Comparator.comparingInt(pel -> {
                 int counter = 0;
                 List<FuncionDTO> funcionesPorPeliculas = funcionController.buscarFuncionesPorPelicula(pel.getID());
+                VentaDTO ventaBuscada;
+                List<EntradaDTO> entradasBuscadas;
+
                 for (FuncionDTO funcion : funcionesPorPeliculas) {
-                    counter += funcion.getEntradas().size();
+                    ventaBuscada = ventasController.buscarVentaPorFuncion(funcion.getID());
+                    entradasBuscadas = ventasController.buscarEntradasPorVenta(ventaBuscada.getID());
+                    counter += entradasBuscadas.size();
                 }
+
                 return counter;
             }));
             peliculasMasVistas.addAll(listadoPeliculas);
-            Pelicula peliculaMasVista = peliculasMasVistas.poll();
-            PeliculaDTO peliculaDTO = peliculaToDTO(peliculaMasVista);
-            peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(peliculaMasVista.getCondicionesDescuentoID()));
-            return peliculaDTO;
+
+            return peliculaToDTO(peliculasMasVistas.poll());
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public PeliculaDTO buscarPeliculaConMasRecaudacion() {
+        ventasController = VentasController.getINSTANCE();
+
+        try {
+            PriorityQueue<Pelicula> peliculas = new PriorityQueue<>(Comparator.comparingInt(pel -> (int) ventasController.recaudacionPorPelicula(pel.getID())));
+            peliculas.addAll(listadoPeliculas);
+
+            return peliculaToDTO(peliculas.poll());
         } catch (Exception ex) {
             return null;
         }
@@ -142,7 +153,10 @@ public class PeliculasController {
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
     public PeliculaDTO peliculaToDTO(Pelicula pelicula) {
-        return new PeliculaDTO(pelicula);
+        descuentoController = DescuentoController.getINSTANCE();
+        PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula);
+        peliculaDTO.setCondicionesDescuento(descuentoController.buscarDescuentoPorId(pelicula.getCondicionesDescuentoID()));
+        return peliculaDTO;
     }
 
     // DTOs to OBJs

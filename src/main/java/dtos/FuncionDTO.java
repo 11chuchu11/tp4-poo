@@ -15,6 +15,16 @@ public class FuncionDTO extends Data {
     private List<EntradaDTO> entradas;
     private SalaDTO sala;
 
+
+    public FuncionDTO( String horario, LocalDateTime fecha, List<EntradaDTO> entradas) {
+        super(0);
+        this.horario = horario;
+        this.fecha = fecha;
+        this.entradas = entradas;
+        this.sala = null;
+        this.pelicula = null;
+    }
+
     public FuncionDTO(Funcion funcion) {
         super(funcion.getID());
         this.pelicula = null;

@@ -112,28 +112,29 @@ public class SucursalController {
     public SalaDTO buscarSalaPorID(int salaID) {
         Sala salaBuscada = BusquedaBinaria.buscarPorId(listadoSalas, salaID);
         if (salaBuscada == null) return null;
-        SalaDTO salaDTO = salaToDto(salaBuscada);
-        salaDTO.setSucursal(buscarSucursalPorID(salaBuscada.getSucursalID()));
 
-        return salaDTO;
+        return salaToDto(salaBuscada);
     }
 
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
-    public SucursalDTO sucursalToDto(Sucursal sucursal) {
+    private SucursalDTO sucursalToDto(Sucursal sucursal) {
         return new SucursalDTO(sucursal);
     }
 
-    public static SalaDTO salaToDto(Sala sala) {
-        return new SalaDTO(sala);
+    private SalaDTO salaToDto(Sala sala)
+    {
+        SalaDTO salaDTO = new SalaDTO(sala);
+        salaDTO.setSucursal(buscarSucursalPorID(sala.getSucursalID()));
+        return salaDTO;
     }
 
     // DTOs to OBJs
-    public Sucursal dtoToSucursal(SucursalDTO dto) {
+    private Sucursal dtoToSucursal(SucursalDTO dto) {
         return new Sucursal(dto.getDenominacion(), dto.getDireccion());
     }
 
-    public Sala dtoToSala(SalaDTO dto) {
-        return new Sala(dto.getSucursal().getSucursalID(), dto.getAsientos(), dto.getDenominacion(), dto.getGenero());
+    private Sala dtoToSala(SalaDTO dto) {
+        return new Sala(dto.getSucursal().getID(), dto.getAsientos(), dto.getDenominacion(), dto.getGenero());
     }
 }

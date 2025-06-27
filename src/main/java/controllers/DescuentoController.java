@@ -34,7 +34,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 1, 0, 0),
                 LocalDateTime.of(2025, 6, 30, 23, 59),
                 DiaDeLaSemana.LUNES,
-                10.0f,
+                .1f,
                 TipoTarjeta.LaNacion,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(1, TipoTarjeta.LaNacion, "LN123456")))));
 
@@ -42,7 +42,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 1, 0, 0),
                 LocalDateTime.of(2025, 6, 30, 23, 59),
                 DiaDeLaSemana.MARTES,
-                15.0f,
+                .15f,
                 TipoTarjeta.Clarin365,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(2, TipoTarjeta.Clarin365, "C36578901")))));
 
@@ -50,7 +50,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 1, 0, 0),
                 LocalDateTime.of(2025, 6, 30, 23, 59),
                 DiaDeLaSemana.MIERCOLES,
-                12.5f,
+                .125f,
                 TipoTarjeta.MovieClub,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(3, TipoTarjeta.MovieClub, "MC202412")))));
 
@@ -58,7 +58,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 1, 0, 0),
                 LocalDateTime.of(2025, 7, 1, 23, 59),
                 DiaDeLaSemana.JUEVES,
-                20.0f,
+                .2f,
                 TipoTarjeta.PAMI,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(4, TipoTarjeta.PAMI, "PM654321")))));
 
@@ -66,7 +66,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 15, 0, 0),
                 LocalDateTime.of(2025, 7, 15, 23, 59),
                 DiaDeLaSemana.VIERNES,
-                18.0f,
+                .18f,
                 TipoTarjeta.UADE,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(5, TipoTarjeta.UADE, "UD999888")))));
 
@@ -74,7 +74,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 7, 1, 0, 0),
                 LocalDateTime.of(2025, 7, 31, 23, 59),
                 DiaDeLaSemana.SABADO,
-                8.0f,
+                .08f,
                 TipoTarjeta.LaNacion,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(6, TipoTarjeta.LaNacion, "LN777333")))));
 
@@ -82,7 +82,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 5, 0, 0),
                 LocalDateTime.of(2025, 6, 25, 23, 59),
                 DiaDeLaSemana.DOMINGO,
-                25.0f,
+                .25f,
                 TipoTarjeta.Clarin365,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(7, TipoTarjeta.Clarin365, "C3654444")))));
 
@@ -90,7 +90,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 10, 0, 0),
                 LocalDateTime.of(2025, 6, 20, 23, 59),
                 DiaDeLaSemana.LUNES,
-                5.0f,
+                .05f,
                 TipoTarjeta.MovieClub,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(8, TipoTarjeta.MovieClub, "MC101010")))));
 
@@ -98,7 +98,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 12, 0, 0),
                 LocalDateTime.of(2025, 7, 1, 23, 59),
                 DiaDeLaSemana.MARTES,
-                30.0f,
+                .30f,
                 TipoTarjeta.PAMI,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(9, TipoTarjeta.PAMI, "PM001122")))));
 
@@ -106,7 +106,7 @@ public class DescuentoController {
                 LocalDateTime.of(2025, 6, 18, 0, 0),
                 LocalDateTime.of(2025, 6, 30, 23, 59),
                 DiaDeLaSemana.MIERCOLES,
-                22.5f,
+                .225f,
                 TipoTarjeta.UADE,
                 new ArrayList<>(Arrays.asList(new TarjetaDescuento(10, TipoTarjeta.UADE, "UD232323")))));
 

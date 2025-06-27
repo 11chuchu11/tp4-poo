@@ -51,7 +51,7 @@ public class Entrada extends Data {
     }
 
     public int getFuncionID() {
-        return this.getFuncionID();
+        return this.funcionID;
     }
 
     public void setFuncionID(int funcionID) {

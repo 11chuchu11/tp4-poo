@@ -11,7 +11,7 @@ public class EntradaDTO extends Data {
     private int nroAsiento;
 
     public EntradaDTO(Entrada entrada) {
-        super(entrada.getID());
+        super(0);
         this.funcion = null;
         this.venta = null;
         this.precio = entrada.getPrecio();

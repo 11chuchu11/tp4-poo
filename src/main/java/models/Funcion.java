@@ -9,12 +9,10 @@ public class Funcion extends Data {
     private int peliculaID;
     private String horario;
     private LocalDateTime fecha;
-    private List<Integer> entradasIDs;
     private int salaID;
 
     public Funcion(int id, LocalDateTime fecha, String horario, int salaID, int peliculaID) {
         super(id);
-        this.entradasIDs = new ArrayList<>();
         this.fecha = fecha;
         this.horario = horario;
         this.salaID = salaID;
@@ -27,21 +25,16 @@ public class Funcion extends Data {
         this.horario = horario;
         this.salaID = salaID;
         this.peliculaID = peliculaID;
-        this.entradasIDs = entradasIDs;
     }
 
     public Funcion(LocalDateTime fecha, String horario,  int salaID, int peliculaID) {
         super(0);
-        this.entradasIDs = new ArrayList<>();
         this.fecha = fecha;
         this.horario = horario;
         this.salaID = salaID;
         this.peliculaID = peliculaID;
     }
 
-    public void setEntradasIDs(List<Integer> entradasIDs) {
-        this.entradasIDs = entradasIDs;
-    }
 
     @Override
     public int getID() {
@@ -51,10 +44,6 @@ public class Funcion extends Data {
     @Override
     public void setID(int id) {
         this.id = id;
-    }
-
-    public List<Integer> getEntradasIDs() {
-        return entradasIDs;
     }
 
     public int getPeliculaID() {

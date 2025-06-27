@@ -5,6 +5,7 @@ import models.Pelicula;
 import types.TipoGenero;
 import types.TipoProyeccion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PeliculaDTO extends Data {
@@ -17,6 +18,7 @@ public class PeliculaDTO extends Data {
     private TipoProyeccion tipo;
     private CondicionesDescuentoDTO condicionesDescuento;
 
+
     public PeliculaDTO(Pelicula pelicula) {
         super(pelicula.getID());
         this.genero = pelicula.getGenero();
@@ -25,6 +27,16 @@ public class PeliculaDTO extends Data {
         this.director = pelicula.getDirector();
         this.actores = pelicula.getActores();
         this.tipo = pelicula.getTipo();
+        this.condicionesDescuento = null;
+    }
+    public PeliculaDTO(TipoGenero genero, String nombrePelicula, int duracionEnMinutos, String director, TipoProyeccion tipo) {
+        super(0);
+        this.genero = genero;
+        this.nombrePelicula = nombrePelicula;
+        this.duracionEnMinutos = duracionEnMinutos;
+        this.director = director;
+        this.actores = new ArrayList<>();
+        this.tipo = tipo;
         this.condicionesDescuento = null;
     }
 

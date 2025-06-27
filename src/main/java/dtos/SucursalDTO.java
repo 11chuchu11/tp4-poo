@@ -6,8 +6,15 @@ import models.Sucursal;
 import java.util.List;
 
 public class SucursalDTO extends Data {
-    private final String denominacion;
-    private final String direccion;
+    private  String denominacion;
+
+    public SucursalDTO( String denominacion, String direccion) {
+        super(0);
+        this.denominacion = denominacion;
+        this.direccion = direccion;
+    }
+
+    private  String direccion;
     private List<SalaDTO> salas;
 
     public SucursalDTO(Sucursal sucursal) {

@@ -1,9 +1,6 @@
 package controllers;
 
-import dtos.EntradaDTO;
-import dtos.FuncionDTO;
-import dtos.PeliculaDTO;
-import dtos.SalaDTO;
+import dtos.*;
 import models.Entrada;
 import models.Funcion;
 import models.Pelicula;
@@ -19,16 +16,13 @@ import java.util.List;
 public class FuncionController {
 
     private static FuncionController INSTANCE;
-    private final List<Funcion> listadoFunciones;
-    private final SucursalController sucursalController;
-    private final PeliculasController peliculasController;
-    private final VentasController ventasController;
+    private List<Funcion> listadoFunciones;
+    private SucursalController sucursalController;
+    private PeliculasController peliculasController;
+    private VentasController ventasController;
 
     private FuncionController() {
         listadoFunciones = new ArrayList<>();
-        sucursalController = SucursalController.getINSTANCE();
-        peliculasController = PeliculasController.getINSTANCE();
-        ventasController = VentasController.getINSTANCE();
         precargarFunciones();
     }
 
@@ -67,12 +61,14 @@ public class FuncionController {
     // ____________________________________METHODS____________________________________
     // [4.a. Registrar una nueva función por género]
     public int altaNuevaFuncion(FuncionDTO funcionDTO) {
+        peliculasController = PeliculasController.getINSTANCE();
         try {
             Funcion nuevaFuncion = dtoToFuncion(funcionDTO);
             Pelicula peliculaFuncion = peliculasController.dtoToPelicula(peliculasController.buscarPeliculaPorID(funcionDTO.getPelicula().getID()));
             if (existeFuncion(nuevaFuncion)) return 0;
             // id = -2 no se puede crear la funcion para esa sala por el genero
             if (funcionDTO.getSala().getGenero() != peliculaFuncion.getGenero() && funcionDTO.getSala().getGenero() != null) return -2;
+
             int id = getFuncionID();
             nuevaFuncion.setID(id);
             listadoFunciones.add(nuevaFuncion);
@@ -83,56 +79,32 @@ public class FuncionController {
     }
 
     public FuncionDTO buscarFuncionPorID(int funcionID) {
-        Funcion funcionBuscada = BusquedaBinaria.buscarPorId(listadoFunciones, funcionID);
-        List<EntradaDTO>  entradasBuscadas = new ArrayList<>();
-        EntradaDTO entradaDTO;
-
-
-        if (funcionBuscada == null) return null;
-
         try {
-            FuncionDTO funcionDTO = funcionToDTO(funcionBuscada);
-            SalaDTO sala = sucursalController.buscarSalaPorID(funcionBuscada.getSalaID());
-            PeliculaDTO pelicula = peliculasController.buscarPeliculaPorID(funcionBuscada.getPeliculaID());
-            for (Integer entradaID: funcionBuscada.getEntradasIDs()){
-                entradaDTO = ventasController.buscarEntradaPorID(entradaID);
-                entradasBuscadas.add(entradaDTO);
-            }
-            funcionDTO.setSala(sala);
-            funcionDTO.setPelicula(pelicula);
-            funcionDTO.setEntradas(entradasBuscadas);
-            return funcionDTO;
+            Funcion funcionBuscada = BusquedaBinaria.buscarPorId(listadoFunciones, funcionID);
+
+            if (funcionBuscada == null) return null;
+
+            return funcionToDTO(funcionBuscada);
         } catch (Exception ex) {
             return null;
         }
     }
 
     public List<FuncionDTO> buscarFuncionesPorPelicula(int peliculaID) {
-        List<FuncionDTO> funcionesBuscadas = new ArrayList<>();
-        PeliculaDTO peliculaBuscada = peliculasController.buscarPeliculaPorID(peliculaID);
-        FuncionDTO funcionDTO;
-
-        if (peliculaBuscada == null) return funcionesBuscadas;
-
-        List<EntradaDTO> entradasBuscadas = new ArrayList<>();
+        peliculasController = PeliculasController.getINSTANCE();
 
         try {
+            List<FuncionDTO> funcionesBuscadas = new ArrayList<>();
+            PeliculaDTO peliculaBuscada = peliculasController.buscarPeliculaPorID(peliculaID);
+
+            if (peliculaBuscada == null) return funcionesBuscadas;
 
             for (Funcion funcion : listadoFunciones) {
                 if (funcion.getPeliculaID() == peliculaID) {
-                    funcionDTO = funcionToDTO(funcion);
-                    funcionDTO.setPelicula(peliculaBuscada);
-                    funcionDTO.setSala(sucursalController.buscarSalaPorID(funcion.getSalaID()));
-                    for (Integer entradaID: funcion.getEntradasIDs()){
-                        entradasBuscadas.add(ventasController.buscarEntradaPorID(entradaID));
-                    }
-                    funcionDTO.setEntradas(entradasBuscadas);
-
-                    funcionesBuscadas.add(funcionDTO);
+                    funcionesBuscadas.add(funcionToDTO(funcion));
                 }
-
-                entradasBuscadas.clear();
             }
+
             return funcionesBuscadas;
         } catch (Exception ex) {
             return null;
@@ -140,30 +112,17 @@ public class FuncionController {
     }
 
     public List<FuncionDTO> buscarFuncionesPorGenero(TipoGenero genero) {
-        List<PeliculaDTO> peliculasBuscadas = peliculasController.buscarPeliculasPorGenero(genero);
-        List<FuncionDTO> funcionesBuscadas = new ArrayList<>();
-        PeliculaDTO peliculaDTO;
-        FuncionDTO funcionDTO;
-        List<EntradaDTO> entradasBuscadas = new ArrayList<>();
-
+        peliculasController = PeliculasController.getINSTANCE();
         try {
-            if (!peliculasBuscadas.isEmpty())return funcionesBuscadas;
+            List<PeliculaDTO> peliculasBuscadas = peliculasController.buscarPeliculasPorGenero(genero);
+            List<FuncionDTO> funcionesBuscadas = new ArrayList<>();
+            PeliculaDTO peliculaDTO;
+
+            if (!peliculasBuscadas.isEmpty()) return funcionesBuscadas;
 
             for (Funcion funcion : listadoFunciones) {
                 peliculaDTO = BusquedaBinaria.buscarPorId(peliculasBuscadas, funcion.getPeliculaID());
-                if (peliculaDTO != null) {
-                    funcionDTO = funcionToDTO(funcion);
-                    funcionDTO.setPelicula(peliculaDTO);
-                    funcionDTO.setSala(sucursalController.buscarSalaPorID(funcion.getSalaID()));
-                    for (Integer entradaID: funcion.getEntradasIDs()){
-                        entradasBuscadas.add(ventasController.buscarEntradaPorID(entradaID));
-                    }
-                    funcionDTO.setEntradas(entradasBuscadas);
-
-                    funcionesBuscadas.add(funcionDTO);
-                }
-
-                entradasBuscadas.clear();
+                if (peliculaDTO != null) funcionesBuscadas.add(funcionToDTO(funcion));
             }
             return funcionesBuscadas;
         } catch (Exception ex) {
@@ -173,48 +132,47 @@ public class FuncionController {
 
     public List<FuncionDTO> buscarFuncionesPorFecha(LocalDateTime fchFuncion) {
         List<FuncionDTO> funcionesBuscadas = new ArrayList<>();
-        FuncionDTO funcionDTO;
-        List<EntradaDTO> entradasBuscadas = new ArrayList<>();
-
-        for (Funcion funcion : listadoFunciones) {
-            if (funcion.getFecha().toLocalDate().isEqual(fchFuncion.toLocalDate())) {
-                funcionDTO = funcionToDTO(funcion);
-                funcionDTO.setSala(sucursalController.buscarSalaPorID(funcion.getSalaID()));
-                funcionDTO.setPelicula(peliculasController.buscarPeliculaPorID(funcion.getPeliculaID()));
-                for (Integer entradaID: funcion.getEntradasIDs()){
-                    entradasBuscadas.add(ventasController.buscarEntradaPorID(entradaID));
-                }
-
-                funcionesBuscadas.add(funcionDTO);
+        try {
+            for (Funcion funcion : listadoFunciones) {
+                if (funcion.getFecha().toLocalDate().isEqual(fchFuncion.toLocalDate()))
+                    funcionesBuscadas.add(funcionToDTO(funcion));
             }
 
-            entradasBuscadas.clear();
+            return funcionesBuscadas;
+        } catch (Exception ex) {
+            return null;
         }
-        return funcionesBuscadas;
     }
 
     public int obtenerAsientosDisponiblePorFuncion(int funcionID) {
-        FuncionDTO funcionDTO = buscarFuncionPorID(funcionID);
-        if (funcionDTO == null) return 0;
-        return funcionDTO.getSala().getAsientos() - funcionDTO.getEntradas().size();
-    }
+        ventasController = VentasController.getINSTANCE();
+        try{
+            FuncionDTO funcionDTO = buscarFuncionPorID(funcionID);
+            if (funcionDTO == null) return 0;
+            VentaDTO ventaBuscada = ventasController.buscarVentaPorFuncion(funcionID);
+            List<EntradaDTO> entradasBuscadas = ventasController.buscarEntradasPorVenta(ventaBuscada.getID());
 
+            return funcionDTO.getSala().getAsientos() - entradasBuscadas.size();
+        }catch (Exception ex) {
+            return 0;
+        }
+    }
 
     // ____________________________________CONVERTERS____________________________________
     // OBJs to DTOs
     public FuncionDTO funcionToDTO(Funcion funcion) {
-        return new FuncionDTO(funcion);
+        peliculasController = PeliculasController.getINSTANCE();
+        sucursalController = SucursalController.getINSTANCE();
+        FuncionDTO funcionDTO = new FuncionDTO(funcion);
+        funcionDTO.setPelicula(peliculasController.buscarPeliculaPorID(funcion.getPeliculaID()));
+        funcionDTO.setSala(sucursalController.buscarSalaPorID(funcion.getSalaID()));
+
+        return funcionDTO;
     }
 
     // DTOs to OBJs
     public Funcion dtoToFuncion(FuncionDTO dto) {
-        List<Integer> entradasIDs = new ArrayList<>();
-        for (EntradaDTO entradaDTO : dto.getEntradas()){
-            entradasIDs.add(entradaDTO.getID());
-        }
-        Funcion funcion = new Funcion(dto.getID(),dto.getFecha(),dto.getHorario(),dto.getSala().getID(),dto.getPelicula().getID());
-        funcion.setEntradasIDs(entradasIDs);
-        return funcion;
+        return new Funcion(dto.getID(), dto.getFecha(), dto.getHorario(), dto.getSala().getID(), dto.getPelicula().getID());
 
     }
 
